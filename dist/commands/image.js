@@ -11,19 +11,32 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.command = void 0;
 const discord_js_1 = require("discord.js");
+const openai_1 = require("../libs/openai");
 exports.command = {
-    name: "ping",
+    name: "image",
     data: new discord_js_1.SlashCommandBuilder()
-        .setName("ping")
-        .setDescription("Affiche le ping du bot."),
+        .setName("image")
+        .setDescription("Génére une image à partir d'un prompt.")
+        .addStringOption((option) => {
+        return option
+            .setName("prompt")
+            .setDescription("De quoi veux tu générer une image ?")
+            .setRequired(true);
+    }),
     execute: (interaction) => __awaiter(void 0, void 0, void 0, function* () {
-        yield interaction.reply({
-            embeds: [
-                new discord_js_1.EmbedBuilder()
-                    .setAuthor({ name: "GPT" })
-                    .setDescription("" + interaction.client.ws.ping + "ms")
-                    .setColor("#ff8e4d"),
-            ],
+        const prompt = interaction.options.get("prompt");
+        yield interaction.deferReply();
+        const res = yield openai_1.openai.createImage({
+            prompt: prompt.value.toString(),
+            n: 1,
+            size: "512x512",
+        });
+        yield interaction.editReply({
+            content: "Voici l'image généré à partir de '" +
+                prompt.value +
+                "' <" +
+                res.data.data[0].url +
+                ">",
         });
     }),
 };

@@ -3,14 +3,14 @@ import { Command } from "../../types";
 import { openai } from "../libs/openai";
 
 export const command: Command = {
-  name: "question",
+  name: "gpt",
   data: new SlashCommandBuilder()
-    .setName("question")
+    .setName("gpt")
     .setDescription("Pose une question à GPT.")
     .addStringOption((option) => {
       return option
         .setName("question")
-        .setDescription("Ta question que tu veux poser à GPT")
+        .setDescription("La question que tu souhaites poser à GPT.")
         .setRequired(true);
     }),
   execute: async (interaction) => {
@@ -18,7 +18,7 @@ export const command: Command = {
     await interaction.deferReply();
 
     const res = await openai.createChatCompletion({
-      model: "gpt-4",
+      model: "gpt-3.5-turbo",
       messages: [
         {
           role: "user",
@@ -30,9 +30,9 @@ export const command: Command = {
     await interaction.editReply({
       embeds: [
         new EmbedBuilder()
-          .setAuthor({ name: "GPT-4" })
+          .setAuthor({ name: "GPT" })
           .setDescription(res.data.choices[0].message.content.toString())
-          .setColor("#ff8e4d"),
+          .setColor("#10a37f"),
       ],
     });
   },

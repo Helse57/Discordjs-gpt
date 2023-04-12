@@ -13,21 +13,21 @@ exports.command = void 0;
 const discord_js_1 = require("discord.js");
 const openai_1 = require("../libs/openai");
 exports.command = {
-    name: "question",
+    name: "gpt",
     data: new discord_js_1.SlashCommandBuilder()
-        .setName("question")
+        .setName("gpt")
         .setDescription("Pose une question à GPT.")
         .addStringOption((option) => {
         return option
             .setName("question")
-            .setDescription("Ta question que tu veux poser à GPT")
+            .setDescription("La question que tu souhaites poser à GPT.")
             .setRequired(true);
     }),
     execute: (interaction) => __awaiter(void 0, void 0, void 0, function* () {
         const question = interaction.options.get("question");
         yield interaction.deferReply();
         const res = yield openai_1.openai.createChatCompletion({
-            model: "gpt-4",
+            model: "gpt-3.5-turbo",
             messages: [
                 {
                     role: "user",
@@ -38,9 +38,9 @@ exports.command = {
         yield interaction.editReply({
             embeds: [
                 new discord_js_1.EmbedBuilder()
-                    .setAuthor({ name: "GPT-4" })
+                    .setAuthor({ name: "GPT" })
                     .setDescription(res.data.choices[0].message.content.toString())
-                    .setColor("#ff8e4d"),
+                    .setColor("#10a37f"),
             ],
         });
     }),
