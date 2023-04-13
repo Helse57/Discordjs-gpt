@@ -27,7 +27,7 @@ exports.command = {
         const question = interaction.options.get("question");
         yield interaction.deferReply();
         const res = yield openai_1.openai.createChatCompletion({
-            model: "gpt-3.5-turbo",
+            model: "gpt-4",
             messages: [
                 {
                     role: "user",
@@ -35,13 +35,15 @@ exports.command = {
                 },
             ],
         });
-        yield interaction.editReply({
+        const message = yield interaction.editReply({
             embeds: [
                 new discord_js_1.EmbedBuilder()
                     .setAuthor({ name: "GPT" })
-                    .setDescription(res.data.choices[0].message.content.toString())
+                    .setThumbnail("https://ph-files.imgix.net/b739ac93-2899-4cc1-a893-40ea8afde77e.png?auto=format")
+                    .setDescription(res.data.choices[0].message.content)
                     .setColor("#10a37f"),
             ],
         });
+        message.react("🔁");
     }),
 };

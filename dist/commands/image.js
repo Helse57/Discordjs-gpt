@@ -34,9 +34,8 @@ exports.command = {
         yield interaction.editReply({
             content: "Voici l'image généré à partir de '" +
                 prompt.value +
-                "' <" +
-                res.data.data[0].url +
-                ">",
+                "' " +
+                res.data.data[0].url,
         });
     }),
 };

@@ -11,20 +11,23 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const discord_js_1 = require("discord.js");
 const event = {
-    name: discord_js_1.Events.InteractionCreate,
+    name: discord_js_1.Events.MessageReactionAdd,
     once: false,
-    execute: (interaction) => __awaiter(void 0, void 0, void 0, function* () {
-        if (!interaction.isChatInputCommand())
-            return;
-        const command = interaction.client.commands.get(interaction.commandName);
-        if (interaction.channel.name !== "gpt")
-            return interaction.reply({
-                content: "Vous ne pouvez pas utiliser cette commande dans ce salon.",
-                ephemeral: true,
-            });
-        if (!command)
-            return;
-        yield command.execute(interaction);
+    execute: (reaction) => __awaiter(void 0, void 0, void 0, function* () {
+        if (reaction.partial) {
+            // If the message this reaction belongs to was removed, the fetching might result in an API error which should be handled
+            try {
+                yield reaction.fetch();
+            }
+            catch (error) {
+                console.error("Something went wrong when fetching the message:", error);
+                // Return as `reaction.message.author` may be undefined/null
+                return;
+            }
+        }
+        if (reaction.count === 2) {
+            console.log("ok !!");
+        }
     }),
 };
 exports.default = event;

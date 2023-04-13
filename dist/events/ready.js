@@ -7,7 +7,9 @@ const event = {
     execute: (client) => {
         console.log(`Connecté en tant que ${client.user.tag}`);
         client.user.setStatus("dnd");
-        client.user.setActivity("en cours de développement");
+        client.user.setActivity("GPT-4", {
+            type: discord_js_1.ActivityType.Watching,
+        });
     },
 };
 exports.default = event;

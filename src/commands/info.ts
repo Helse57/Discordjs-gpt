@@ -26,7 +26,7 @@ export const command: Command = {
             },
             {
               name: "Auteur",
-              value: "Mydao#1366",
+              value: "[Mydao#1366](https://github.com/Helse57)",
             },
           ])
           .setFooter({
